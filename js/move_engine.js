@@ -30,7 +30,7 @@ var swineCount = 0;
 
 var movableObjects = [];
 
-function collide(swine) {
+function collide(swine, obj) {
 	let swineCoords = {
 		left: swine.pos_x - SWINE_SIZE / 2,
 		right: swine.pos_x + SWINE_SIZE / 2,
@@ -39,10 +39,10 @@ function collide(swine) {
 	}
 
 	return !(
-		swineCoords.top >= bowlCoords.bottom ||
-		swineCoords.right <= bowlCoords.left ||
-		swineCoords.bottom <= bowlCoords.top ||
-		swineCoords.left >= bowlCoords.right
+		swineCoords.top >= obj.bottom ||
+		swineCoords.right <= obj.left ||
+		swineCoords.bottom <= obj.top ||
+		swineCoords.left >= obj.right
 	);
 }
 
@@ -57,7 +57,7 @@ function createSwine() {
 		case 0:
 			newSwine.pos_x = 0;
 			newSwine.pos_y = globalHeight / 2;
-			
+
 			newSwine.speed_x = (getRandomInt(SPEED_LIMIT) + 1);
 			newSwine.speed_y = 0;
 			break;
@@ -87,30 +87,24 @@ function createSwine() {
 			newSwine.pos_y = 0;
 	}
 
-	swine.style.top = newSwine.pos_y - (SWINE_SIZE/2) + 'px';
-	swine.style.left = newSwine.pos_x - (SWINE_SIZE/2) + 'px';
+	swine.style.top = newSwine.pos_y - (SWINE_SIZE / 2) + 'px';
+	swine.style.left = newSwine.pos_x - (SWINE_SIZE / 2) + 'px';
 	swine.id = "swine" + (swineCount++);
 	document.body.appendChild(swine);
 	let interval = setInterval(frame, GAME_SPEED);
 
-	console.log("NEW SWINE");
-	console.log(JSON.stringify(newSwine, null, 4));
-
 	function frame() {
-		if (!collide(newSwine)) {
-			console.log("Not collided yet");
+		if (!collide(newSwine, bowlCoords)) {
 			newSwine.pos_x = newSwine.pos_x + newSwine.speed_x;
-			swine.style.left = newSwine.pos_x - (SWINE_SIZE/2) + 'px';
-	
+			swine.style.left = newSwine.pos_x - (SWINE_SIZE / 2) + 'px';
+
 			newSwine.pos_y = newSwine.pos_y + newSwine.speed_y;
-			swine.style.top = newSwine.pos_y - (SWINE_SIZE/2) + 'px';
+			swine.style.top = newSwine.pos_y - (SWINE_SIZE / 2) + 'px';
 		} else {
-			console.log("Collided!");
 			clearInterval(interval);
+			swine.remove();
 		}
 	}
-
-	console.log(JSON.stringify(newSwine, null, 4));
 }
 
 setInterval(createSwine, 2000);
