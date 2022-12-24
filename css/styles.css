@@ -81,8 +81,8 @@ body {
 }
 
 #hello_popup {
-	height: 200px;
-	margin-top: calc(50vh - 100px);
+	height: 310px;
+	margin-top: calc(50vh - 155px);
 }
 
 #end_popup {
