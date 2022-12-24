@@ -1,3 +1,5 @@
+var divScore = document.getElementById('score');
+
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
 }
@@ -6,6 +8,13 @@ const SPEED_LIMIT = 3;
 const BOWL_SIZE = 80;
 const SWINE_SIZE = 80;
 const GAME_SPEED = 60;
+
+var CONFIG = {
+	SCORE: 0,
+	LIVES: 10
+}
+
+divScore.innerHTML = CONFIG.LIVES;
 
 const globalHeight = document.body.scrollHeight;
 const globalWidth = document.body.scrollWidth;
@@ -103,6 +112,8 @@ function createSwine() {
 		} else {
 			clearInterval(interval);
 			swine.remove();
+			CONFIG.LIVES--;
+			divScore.innerHTML = CONFIG.LIVES;
 		}
 	}
 }
