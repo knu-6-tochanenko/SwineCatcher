@@ -68,21 +68,33 @@ body {
 	left: 0px;
 }
 
-#hello_popup {
+#hello_popup, #end_popup {
 	width: 350px;
-	height: 200px;
 	padding: 16px;
 	background-color: white;
 	border-radius: 8px;
 	position: fixed;
 	margin-left: calc(50vw - 175px);
-	margin-top: calc(50vh - 100px);
 	z-index: 1000;
 	box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255), 0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
 	text-align: center;
 }
 
-#hello_popup input {
+#hello_popup {
+	height: 200px;
+	margin-top: calc(50vh - 100px);
+}
+
+#end_popup {
+	height: 150px;
+	margin-top: calc(50vh - 75px);
+}
+
+#end_popup {
+	display: none;
+}
+
+#hello_popup input, #end_popup input {
 	margin-top: 16px;
 }
 

@@ -4,6 +4,8 @@ var divLives = document.getElementById('lives');
 var divTime = document.getElementById('time');
 var divMode = document.getElementById('mode');
 var divPopup = document.getElementById('hello_popup');
+var divEndPopup = document.getElementById('end_popup');
+var pEndCause = document.getElementById('end_cause');
 
 // Game settings
 var SPEED_LIMIT = 3;
@@ -15,13 +17,7 @@ const TANK_GAME_SPEED = 10;
 const SWINE_SPAWN = 2000;
 const SWINE_SPAWN_EPIC = 700;
 
-// Game stats
-var CONFIG = {
-	SCORE: 0,
-	LIVES: 10,
-	SECONDS: 100,
-	EPIC_MODE: 65
-}
+var CONFIG = {};
 var swineSpawner = {};
 var epicMode = {};
 
@@ -180,6 +176,10 @@ function createSwine() {
 			CONFIG.LIVES--;
 			updateLives();
 
+			if (CONFIG.LIVES == 0) {
+				endGame('BOWL_FAILURE');
+			}
+
 			swines = swines.filter(function (obj) {
 				return obj.id !== newSwine.id;
 			});
@@ -251,7 +251,7 @@ function runEpicMode() {
 	epicMode = setInterval(createSwine, SWINE_SPAWN_EPIC);
 }
 
-function endGame() {
+function endGame(cause) {
 	console.log("ГРУ ЗАВЕРШЕНО!");
 	clearInterval(swineSpawner);
 	clearInterval(tankInterval);
@@ -260,11 +260,38 @@ function endGame() {
 	for (var i = 0; i < swines.length; i++) {
 		clearInterval(swines[i].interval);
 	}
+
+	divEndPopup.style.display = 'block';
+
+	if (cause === 'BOWL_FAILURE') {
+		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
+	} else {
+		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
+	}
 }
 
 function startGame() {
+	for (var i = 0; i < swines.length; i++) {
+		console.log(swines.length);
+		let swineElement = document.getElementById(swines[i].id);
+		swineElement.remove();
+	}	
+	swines = [];
+
+
+	CONFIG = {
+		SCORE: 0,
+		LIVES: 10,
+		SECONDS: 100,
+		EPIC_MODE: 65
+	};
+
+	TANK_SPEED = 3;
+
 	divPopup.style.display = 'none';
+	divEndPopup.style.display = 'none';
 	swineSpawner = setInterval(createSwine, SWINE_SPAWN);
+
 	updateScore();
 	updateLives();
 	updateTime();
