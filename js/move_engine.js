@@ -3,6 +3,7 @@ var divScore = document.getElementById('score');
 var divLives = document.getElementById('lives');
 var divTime = document.getElementById('time');
 var divMode = document.getElementById('mode');
+var divPopup = document.getElementById('hello_popup');
 
 // Game settings
 var SPEED_LIMIT = 3;
@@ -21,6 +22,8 @@ var CONFIG = {
 	SECONDS: 100,
 	EPIC_MODE: 65
 }
+var swineSpawner = {};
+var epicMode = {};
 
 // Variables
 const globalHeight = document.body.scrollHeight;
@@ -241,24 +244,12 @@ function updateTime() {
 	divTime.innerHTML = CONFIG.SECONDS + " секунд";
 }
 
-updateScore();
-updateLives();
-updateTime();
-createTank();
-divMode.innerHTML = "Звичайний режим";
-var swineSpawner = setInterval(createSwine, SWINE_SPAWN);
-var epicMode = {};
-
 function runEpicMode() {
 	divMode.innerHTML = "EPIC РЕЖИМ";
 	SPEED_LIMIT = 10;
 	TANK_SPEED = 5;
 	epicMode = setInterval(createSwine, SWINE_SPAWN_EPIC);
 }
-
-setTimeout(runEpicMode, CONFIG.EPIC_MODE * 1000);
-
-createTimer();
 
 function endGame() {
 	console.log("ГРУ ЗАВЕРШЕНО!");
@@ -269,4 +260,16 @@ function endGame() {
 	for (var i = 0; i < swines.length; i++) {
 		clearInterval(swines[i].interval);
 	}
+}
+
+function startGame() {
+	divPopup.style.display = 'none';
+	swineSpawner = setInterval(createSwine, SWINE_SPAWN);
+	updateScore();
+	updateLives();
+	updateTime();
+	createTank();
+	divMode.innerHTML = "Звичайний режим";
+	setTimeout(runEpicMode, CONFIG.EPIC_MODE * 1000);
+	createTimer();
 }
