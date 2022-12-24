@@ -19,20 +19,26 @@ body {
 	margin-top: calc(50vh - 40px);
 }
 
-#score, #lives {
+#score, #lives, #time {
 	display: inline-block;
 	position: fixed;
 	padding: 16px;
-	right: 0;
 	font-size: 3rem;
 }
 
 #score {
 	top: 0;
+	right: 0;
 }
 
 #lives {
 	top: 50px;
+	right: 0;
+}
+
+#time {
+	left: 0;
+	top: 0;
 }
 
 #tank {

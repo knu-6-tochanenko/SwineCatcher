@@ -1,6 +1,7 @@
 // DOM Elements
 var divScore = document.getElementById('score');
 var divLives = document.getElementById('lives');
+var divTime = document.getElementById('time');
 
 // Game settings
 const SPEED_LIMIT = 3;
@@ -14,7 +15,8 @@ const SWINE_SPAWN = 2000;
 // Game stats
 var CONFIG = {
 	SCORE: 0,
-	LIVES: 10
+	LIVES: 10,
+	SECONDS: 10
 }
 
 // Variables
@@ -35,6 +37,8 @@ var tankConfig = {
 	speed_x: 0,
 	speed_y: 0
 };
+var tankInterval = {};
+var timerInterval = {};
 
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
@@ -58,7 +62,7 @@ function collide(swine, obj) {
 
 function createTank() {
 	var tank = document.getElementById('tank');
-	let interval = setInterval(tankFrame, TANK_GAME_SPEED);
+	tankInterval = setInterval(tankFrame, TANK_GAME_SPEED);
 
 	function tankFrame() {
 		let tankCoords = {
@@ -73,12 +77,12 @@ function createTank() {
 				console.log(JSON.stringify(swines[i], null, 4));
 				let swineElement = document.getElementById(swines[i].id);
 				clearInterval(swines[i].interval);
-				
+
 				swineElement.remove();
-				
+
 				swines.splice(i, 1);
 				CONFIG.SCORE++;
-				divScore.innerHTML = CONFIG.SCORE + ' points';
+				setScore(CONFIG.SCORE);
 				break;
 			}
 		}
@@ -150,11 +154,11 @@ function createSwine() {
 	newSwine.id = "swine" + (swineCount++);
 	swine.setAttribute('id', newSwine.id);
 
-	
+
 	document.body.appendChild(swine);
 	let interval = setInterval(frame, GAME_SPEED);
 	newSwine.interval = interval;
-	
+
 	swines.push(newSwine);
 
 	function frame() {
@@ -168,12 +172,11 @@ function createSwine() {
 			clearInterval(newSwine.interval);
 			swine.remove();
 			CONFIG.LIVES--;
-			divLives.innerHTML = CONFIG.LIVES;
+			setLives(CONFIG.LIVES);
 
-			swines = swines.filter(function( obj ) {
+			swines = swines.filter(function (obj) {
 				return obj.id !== newSwine.id;
 			});
-
 		}
 	}
 }
@@ -212,7 +215,42 @@ function moveTank(event) {
 	}
 }
 
-divScore.innerHTML = CONFIG.SCORE;
-divLives.innerHTML = CONFIG.LIVES;
+function createTimer() {
+	var start = Date.now();
+	timerInterval = setInterval(function () {
+		CONFIG.SECONDS--;
+		if (CONFIG.SECONDS == 0) {
+			endGame();
+		}
+		setTime(CONFIG.SECONDS);
+	}, 1000);
+}
+
+function setScore(score) {
+	divScore.innerHTML = score + " свинособак розчавлено";
+}
+
+function setLives(lives) {
+	divLives.innerHTML = lives + " життів у унітазу";
+}
+
+function setTime(seconds) {
+	divTime.innerHTML = seconds + " секунд";
+}
+
+setScore(CONFIG.SCORE);
+setLives(CONFIG.LIVES);
+setTime(CONFIG.SECONDS);
 createTank();
-setInterval(createSwine, SWINE_SPAWN);
+var swineSpawner = setInterval(createSwine, SWINE_SPAWN);
+createTimer();
+
+function endGame() {
+	console.log("ГРУ ЗАВЕРШЕНО!");
+	clearInterval(swineSpawner);
+	clearInterval(tankInterval);
+	clearInterval(timerInterval);
+	for (var i = 0; i < swines.length; i++) {
+		clearInterval(swines[i].interval);
+	}
+}
