@@ -13,7 +13,7 @@ const bowlCoords = {
 	left: (globalWidth - BOWL_SIZE) / 2,
 	right: (globalWidth + BOWL_SIZE) / 2,
 	top: (globalHeight - BOWL_SIZE) / 2,
-	bottom: (globalHeight + BOWL_SIZE)
+	bottom: (globalHeight + BOWL_SIZE) / 2
 }
 
 var movableObject = {
@@ -38,10 +38,10 @@ function collide(swine) {
 	}
 
 	return !(
+		swineCoords.top >= bowlCoords.bottom ||
+		swineCoords.right <= bowlCoords.left ||
+		swineCoords.bottom <= bowlCoords.top ||
 		swineCoords.left >= bowlCoords.right
-		|| swineCoords.right <= bowlCoords.left
-		|| swineCoords.top >= bowlCoords.bottom
-		|| swineCoords.bottom <= bowlCoords.top
 	);
 }
 
@@ -73,7 +73,8 @@ function createSwine() {
 
 	let newSwine = {};
 
-	let side = getRandomInt(4);
+	// let side = getRandomInt(4);
+	let side = 3;
 	switch (side) {
 		case 0:
 			newSwine.pos_x = 0;
@@ -134,6 +135,6 @@ function createSwine() {
 	console.log(JSON.stringify(newSwine, null, 4));
 }
 
-createSwine();
+// setInterval(createSwine, 50000);
 
-console.log(JSON.stringify(bowlCoords, null, 4));
+createSwine();
