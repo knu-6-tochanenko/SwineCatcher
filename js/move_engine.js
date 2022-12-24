@@ -17,6 +17,8 @@ const TANK_GAME_SPEED = 10;
 const SWINE_SPAWN = 2000;
 const SWINE_SPAWN_EPIC = 700;
 
+const LOCAL_HIGH_SCORE = 'swinesHighScore';
+
 var CONFIG = {};
 var swineSpawner = {};
 var epicMode = {};
@@ -251,6 +253,17 @@ function runEpicMode() {
 	epicMode = setInterval(createSwine, SWINE_SPAWN_EPIC);
 }
 
+function updateHighScore() {
+	let localHighScore = localStorage.getItem(LOCAL_HIGH_SCORE);
+	if (localHighScore) {
+		if (localHighScore < CONFIG.SCORE) {
+			localStorage.setItem(LOCAL_HIGH_SCORE, CONFIG.SCORE);
+		}
+	} else {
+		localStorage.setItem(LOCAL_HIGH_SCORE, CONFIG.SCORE);
+	}
+}
+
 function endGame(cause) {
 	console.log("ГРУ ЗАВЕРШЕНО!");
 	clearInterval(swineSpawner);
@@ -261,12 +274,15 @@ function endGame(cause) {
 		clearInterval(swines[i].interval);
 	}
 
+	updateHighScore();
+
 	divEndPopup.style.display = 'block';
 
+	let localHighScore = localStorage.getItem(LOCAL_HIGH_SCORE);
 	if (cause === 'BOWL_FAILURE') {
-		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
+		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак! Твій рекод: <b>" + localHighScore + "</b>";
 	} else {
-		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
+		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак! Твій рекод: <b>" + localHighScore + "</b>";
 	}
 }
 
