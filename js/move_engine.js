@@ -5,6 +5,7 @@ function getRandomInt(max) {
 const SPEED_LIMIT = 3;
 const BOWL_SIZE = 80;
 const SWINE_SIZE = 80;
+const GAME_SPEED = 60;
 
 const globalHeight = document.body.scrollHeight;
 const globalWidth = document.body.scrollWidth;
@@ -45,49 +46,26 @@ function collide(swine) {
 	);
 }
 
-function calculateSwineDirections(swine) {
-	let speed = {
-		speed_x: 0,
-		speed_y: 0
-	};
-
-	if (swine.pos_x > globalWidth / 2) {
-		speed.speed_x = -1;
-	}
-	if (swine.pos_x < globalWidth / 2) {
-		speed.speed_x = 1;
-	}
-	if (swine.pos_y > globalHeight / 2) {
-		speed.speed_y = -1;
-	}
-	if (swine.pos_y < globalHeight / 2) {
-		speed.speed_y = 1;
-	}
-
-	return speed;
-}
-
 function createSwine() {
 	let swine = document.createElement('div');
 	swine.classList.add('swine');
 
 	let newSwine = {};
 
-	// let side = getRandomInt(4);
-	let side = 3;
+	let side = getRandomInt(4);
 	switch (side) {
 		case 0:
 			newSwine.pos_x = 0;
 			newSwine.pos_y = globalHeight / 2;
 			
-			newSwine.speed_x = 1;
+			newSwine.speed_x = (getRandomInt(SPEED_LIMIT) + 1);
 			newSwine.speed_y = 0;
 			break;
 		case 1:
 			newSwine.pos_x = globalWidth;
 			newSwine.pos_y = globalHeight / 2;
 
-			newSwine.speed_x = -1;
+			newSwine.speed_x = -(getRandomInt(SPEED_LIMIT) + 1);
 			newSwine.speed_y = 0;
 			break;
 		case 2:
@@ -95,14 +73,14 @@ function createSwine() {
 			newSwine.pos_y = 0;
 
 			newSwine.speed_x = 0;
-			newSwine.speed_y = 1;
+			newSwine.speed_y = (getRandomInt(SPEED_LIMIT) + 1);
 			break;
 		case 3:
 			newSwine.pos_x = globalWidth / 2;
 			newSwine.pos_y = globalHeight;
 
 			newSwine.speed_x = 0;
-			newSwine.speed_y = -1;
+			newSwine.speed_y = -(getRandomInt(SPEED_LIMIT) + 1);
 			break;
 		default:
 			newSwine.pos_x = 0;
@@ -113,7 +91,7 @@ function createSwine() {
 	swine.style.left = newSwine.pos_x - (SWINE_SIZE/2) + 'px';
 	swine.id = "swine" + (swineCount++);
 	document.body.appendChild(swine);
-	let interval = setInterval(frame, 10);
+	let interval = setInterval(frame, GAME_SPEED);
 
 	console.log("NEW SWINE");
 	console.log(JSON.stringify(newSwine, null, 4));
@@ -135,6 +113,4 @@ function createSwine() {
 	console.log(JSON.stringify(newSwine, null, 4));
 }
 
-// setInterval(createSwine, 50000);
-
-createSwine();
+setInterval(createSwine, 2000);
