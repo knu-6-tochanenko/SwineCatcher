@@ -19,13 +19,28 @@ body {
 	margin-top: calc(50vh - 40px);
 }
 
-#score {
+#score, #lives {
 	display: inline-block;
 	position: fixed;
 	padding: 16px;
-	top: 0;
 	right: 0;
 	font-size: 3rem;
+}
+
+#score {
+	top: 0;
+}
+
+#lives {
+	top: 50px;
+}
+
+#tank {
+	display: inline-block;
+	position: fixed;
+	height: 80px;
+	width: 80px;
+	background-color: green;
 }
 
 .swine {
