@@ -7,3 +7,23 @@ body {
 	height: 100vh;
 	width: 100vw;
 }
+
+#bowl {
+	display: inline-block;
+	position: fixed;
+	height: 80px;
+	width: 80px;
+	background-color: brown;
+	margin-left: calc(50vw - 40px);
+	margin-top: calc(50vh - 40px);
+}
+
+.swine {
+	position: fixed;
+	display: inline-block;
+	height: 80px;
+	width: 80px;
+	background-color: olive;
+	top: 0px;
+	left: 0px;
+}
