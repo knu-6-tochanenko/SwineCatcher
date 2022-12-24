@@ -78,7 +78,6 @@ function createTank() {
 
 		for (var i = 0; i < swines.length; i++) {
 			if (collide(swines[i], tankCoords)) {
-				console.log(JSON.stringify(swines[i], null, 4));
 				let swineElement = document.getElementById(swines[i].id);
 				clearInterval(swines[i].interval);
 
@@ -112,6 +111,18 @@ function createTank() {
 	}
 }
 
+function calculateSwineSpeed(swine) {
+	let xDistanse = globalWidth / 2 - swine.pos_x;
+	let yDispanse = globalHeight / 2 - swine.pos_y;
+	let speedModifier = getRandomInt(SPEED_LIMIT) + 1;
+	let time = Math.max(Math.abs(xDistanse) / speedModifier, Math.abs(yDispanse) / speedModifier);
+
+	return {
+		speed_x: xDistanse / time,
+		speed_y: yDispanse / time
+	};
+}
+
 function createSwine() {
 	let swine = document.createElement('div');
 	swine.classList.add('swine');
@@ -122,36 +133,28 @@ function createSwine() {
 	switch (side) {
 		case 0:
 			newSwine.pos_x = 0;
-			newSwine.pos_y = globalHeight / 2;
-
-			newSwine.speed_x = (getRandomInt(SPEED_LIMIT) + 1);
-			newSwine.speed_y = 0;
+			newSwine.pos_y = getRandomInt(globalHeight);
 			break;
 		case 1:
 			newSwine.pos_x = globalWidth;
-			newSwine.pos_y = globalHeight / 2;
-
-			newSwine.speed_x = -(getRandomInt(SPEED_LIMIT) + 1);
-			newSwine.speed_y = 0;
+			newSwine.pos_y = getRandomInt(globalHeight);
 			break;
 		case 2:
-			newSwine.pos_x = globalWidth / 2;
+			newSwine.pos_x = getRandomInt(globalWidth);
 			newSwine.pos_y = 0;
-
-			newSwine.speed_x = 0;
-			newSwine.speed_y = (getRandomInt(SPEED_LIMIT) + 1);
 			break;
 		case 3:
-			newSwine.pos_x = globalWidth / 2;
+			newSwine.pos_x = getRandomInt(globalWidth);
 			newSwine.pos_y = globalHeight;
-
-			newSwine.speed_x = 0;
-			newSwine.speed_y = -(getRandomInt(SPEED_LIMIT) + 1);
 			break;
 		default:
 			newSwine.pos_x = 0;
 			newSwine.pos_y = 0;
 	}
+
+	let swineSpeed = calculateSwineSpeed(newSwine);
+	newSwine.speed_x = swineSpeed.speed_x;
+	newSwine.speed_y = swineSpeed.speed_y;
 
 	swine.style.top = newSwine.pos_y - (SWINE_SIZE / 2) + 'px';
 	swine.style.left = newSwine.pos_x - (SWINE_SIZE / 2) + 'px';
@@ -193,31 +196,26 @@ document.addEventListener('keydown', moveTank);
 
 function moveTank(event) {
 	if (event.isComposing || event.keyCode === 87 || event.keyCode === 38) {
-		console.log("UP");
 		tankConfig.speed_x = 0;
 		tankConfig.speed_y = -TANK_SPEED;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 65 || event.keyCode === 37) {
-		console.log("LEFT");
 		tankConfig.speed_x = -TANK_SPEED;
 		tankConfig.speed_y = 0;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 83 || event.keyCode === 40) {
-		console.log("BOTTOM");
 		tankConfig.speed_x = 0;
 		tankConfig.speed_y = TANK_SPEED;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 68 || event.keyCode === 39) {
-		console.log("RIGHT");
 		tankConfig.speed_x = TANK_SPEED;
 		tankConfig.speed_y = 0;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 32) {
-		console.log("RIGHT");
 		tankConfig.speed_x = 0;
 		tankConfig.speed_y = 0;
 	}
@@ -265,7 +263,6 @@ function updateHighScore() {
 }
 
 function endGame(cause) {
-	console.log("ГРУ ЗАВЕРШЕНО!");
 	clearInterval(swineSpawner);
 	clearInterval(tankInterval);
 	clearInterval(timerInterval);
@@ -288,7 +285,6 @@ function endGame(cause) {
 
 function startGame() {
 	for (var i = 0; i < swines.length; i++) {
-		console.log(swines.length);
 		let swineElement = document.getElementById(swines[i].id);
 		swineElement.remove();
 	}	
@@ -299,7 +295,7 @@ function startGame() {
 		SCORE: 0,
 		LIVES: 10,
 		SECONDS: 100,
-		EPIC_MODE: 65
+		EPIC_MODE: 0
 	};
 
 	TANK_SPEED = 3;
