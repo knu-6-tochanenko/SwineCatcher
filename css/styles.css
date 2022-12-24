@@ -19,7 +19,7 @@ body {
 	margin-top: calc(50vh - 40px);
 }
 
-#score, #lives, #time {
+#score, #lives, #time, #mode {
 	display: inline-block;
 	position: fixed;
 	padding: 16px;
@@ -39,6 +39,12 @@ body {
 #time {
 	left: 0;
 	top: 0;
+}
+
+#mode {
+	width: 100vw;
+	top: 0;
+	text-align: center;
 }
 
 #tank {

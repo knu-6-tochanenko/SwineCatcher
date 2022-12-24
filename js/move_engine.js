@@ -2,21 +2,24 @@
 var divScore = document.getElementById('score');
 var divLives = document.getElementById('lives');
 var divTime = document.getElementById('time');
+var divMode = document.getElementById('mode');
 
 // Game settings
-const SPEED_LIMIT = 3;
+var SPEED_LIMIT = 3;
 const BOWL_SIZE = 80;
 const SWINE_SIZE = 80;
 const GAME_SPEED = 60;
-const TANK_SPEED = 3;
+var TANK_SPEED = 3;
 const TANK_GAME_SPEED = 10;
 const SWINE_SPAWN = 2000;
+const SWINE_SPAWN_EPIC = 700;
 
 // Game stats
 var CONFIG = {
 	SCORE: 0,
 	LIVES: 10,
-	SECONDS: 10
+	SECONDS: 100,
+	EPIC_MODE: 65
 }
 
 // Variables
@@ -82,21 +85,21 @@ function createTank() {
 
 				swines.splice(i, 1);
 				CONFIG.SCORE++;
-				setScore(CONFIG.SCORE);
+				updateScore();
 				break;
 			}
 		}
 
-		if (tankConfig.pos_x <= 0 && tankConfig.speed_x == -TANK_SPEED) {
+		if (tankConfig.pos_x <= 0 && tankConfig.speed_x < 0) {
 			tankConfig.speed_x = 0;
 		}
-		if (tankConfig.pos_x >= globalWidth && tankConfig.speed_x == TANK_SPEED) {
+		if (tankConfig.pos_x >= globalWidth && tankConfig.speed_x > 0) {
 			tankConfig.speed_x = 0;
 		}
-		if (tankConfig.pos_y <= 0 && tankConfig.speed_y == -TANK_SPEED) {
+		if (tankConfig.pos_y <= 0 && tankConfig.speed_y < 0) {
 			tankConfig.speed_y = 0;
 		}
-		if (tankConfig.pos_y >= globalHeight && tankConfig.speed_y == TANK_SPEED) {
+		if (tankConfig.pos_y >= globalHeight && tankConfig.speed_y > 0) {
 			tankConfig.speed_y = 0;
 		}
 
@@ -172,7 +175,7 @@ function createSwine() {
 			clearInterval(newSwine.interval);
 			swine.remove();
 			CONFIG.LIVES--;
-			setLives(CONFIG.LIVES);
+			updateLives();
 
 			swines = swines.filter(function (obj) {
 				return obj.id !== newSwine.id;
@@ -222,27 +225,39 @@ function createTimer() {
 		if (CONFIG.SECONDS == 0) {
 			endGame();
 		}
-		setTime(CONFIG.SECONDS);
+		updateTime();
 	}, 1000);
 }
 
-function setScore(score) {
-	divScore.innerHTML = score + " свинособак розчавлено";
+function updateScore() {
+	divScore.innerHTML = CONFIG.SCORE + " свинособак розчавлено";
 }
 
-function setLives(lives) {
-	divLives.innerHTML = lives + " життів у унітазу";
+function updateLives() {
+	divLives.innerHTML = CONFIG.LIVES + " життів у унітазу";
 }
 
-function setTime(seconds) {
-	divTime.innerHTML = seconds + " секунд";
+function updateTime() {
+	divTime.innerHTML = CONFIG.SECONDS + " секунд";
 }
 
-setScore(CONFIG.SCORE);
-setLives(CONFIG.LIVES);
-setTime(CONFIG.SECONDS);
+updateScore();
+updateLives();
+updateTime();
 createTank();
+divMode.innerHTML = "Звичайний режим";
 var swineSpawner = setInterval(createSwine, SWINE_SPAWN);
+var epicMode = {};
+
+function runEpicMode() {
+	divMode.innerHTML = "EPIC РЕЖИМ";
+	SPEED_LIMIT = 10;
+	TANK_SPEED = 5;
+	epicMode = setInterval(createSwine, SWINE_SPAWN_EPIC);
+}
+
+setTimeout(runEpicMode, CONFIG.EPIC_MODE * 1000);
+
 createTimer();
 
 function endGame() {
@@ -250,6 +265,7 @@ function endGame() {
 	clearInterval(swineSpawner);
 	clearInterval(tankInterval);
 	clearInterval(timerInterval);
+	clearInterval(epicMode);
 	for (var i = 0; i < swines.length; i++) {
 		clearInterval(swines[i].interval);
 	}
