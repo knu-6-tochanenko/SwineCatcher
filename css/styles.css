@@ -7,6 +7,7 @@
 body {
 	height: 100vh;
 	width: 100vw;
+	background-image: url(../img/bg.jpg);
 }
 
 #bowl {
@@ -14,9 +15,10 @@ body {
 	position: fixed;
 	height: 80px;
 	width: 80px;
-	background-color: brown;
 	margin-left: calc(50vw - 40px);
 	margin-top: calc(50vh - 40px);
+	background-image: url(../img/bowl.png);
+	filter: drop-shadow(8px 8px 16px gold);
 }
 
 #score,
@@ -27,6 +29,9 @@ body {
 	position: fixed;
 	padding: 16px;
 	font-size: 2rem;
+	color: white;
+	font-weight: bold;
+	text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
 }
 
 #score {
@@ -55,7 +60,8 @@ body {
 	position: fixed;
 	height: 80px;
 	width: 80px;
-	background-color: green;
+	background-image: url(../img/tank.png);
+	filter: drop-shadow(0px 0px 16px lime);
 }
 
 .swine {
@@ -63,9 +69,10 @@ body {
 	display: inline-block;
 	height: 80px;
 	width: 80px;
-	background-color: olive;
 	top: 0px;
 	left: 0px;
+	background-image: url(../img/swine.png);
+	filter: contrast(200%);
 }
 
 #hello_popup, #end_popup {

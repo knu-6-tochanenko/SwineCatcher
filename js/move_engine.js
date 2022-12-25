@@ -126,6 +126,7 @@ function calculateSwineSpeed(swine) {
 function createSwine() {
 	let swine = document.createElement('div');
 	swine.classList.add('swine');
+	swine.style.filter = "hue-rotate(" + getRandomInt(360) + "deg) drop-shadow(0px 0px 16px red)";
 
 	let newSwine = {};
 
