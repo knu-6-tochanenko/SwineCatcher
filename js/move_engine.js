@@ -288,12 +288,13 @@ function endGame(cause) {
 
 	divEndPopup.style.display = 'block';
 
+	let localHighScore = localStorage.getItem(LOCAL_HIGH_SCORE);
 	if (cause === 'BOWL_FAILURE') {
 		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
 	} else {
 		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
 	}
-	pHighScore.innerHTML = "Твій рекорд: <b>" + localStorage.getItem(LOCAL_HIGH_SCORE) + "</b>";
+	pHighScore.innerHTML = "Твій рекорд: <b>" + (localHighScore ? localHighScore : 0) + "</b>";
 }
 
 function startGame() {
@@ -352,4 +353,5 @@ function startImpossibleGame() {
 	startGame();
 }
 
-pHighScoreStart.innerHTML = "Твій рекорд: <b>" + localStorage.getItem(LOCAL_HIGH_SCORE) + "</b>";
+let localHighScore = localStorage.getItem(LOCAL_HIGH_SCORE);
+pHighScoreStart.innerHTML = "Твій рекорд: <b>" + (localHighScore ? localHighScore : 0) + "</b>";
