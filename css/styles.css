@@ -89,13 +89,13 @@ body {
 }
 
 #hello_popup {
-	height: 310px;
-	margin-top: calc(50vh - 155px);
+	height: 420px;
+	margin-top: calc(50vh - 210px);
 }
 
 #end_popup {
-	height: 170px;
-	margin-top: calc(50vh - 85px);
+	height: 280px;
+	margin-top: calc(50vh - 140px);
 }
 
 #end_popup {

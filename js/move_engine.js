@@ -301,15 +301,6 @@ function startGame() {
 	}	
 	swines = [];
 
-
-	CONFIG = {
-		SCORE: 0,
-		LIVES: 10,
-		SECONDS: 100,
-		EPIC_MODE: 40,
-		HARDCORE_MODE: 70
-	};
-
 	TANK_SPEED = 3;
 
 	divPopup.style.display = 'none';
@@ -324,4 +315,37 @@ function startGame() {
 	setTimeout(runEpicMode, CONFIG.EPIC_MODE * 1000);
 	setTimeout(runHardcoreMode, CONFIG.HARDCORE_MODE * 1000);
 	createTimer();
+}
+
+function startEasyGame() {
+	CONFIG = {
+		SCORE: 0,
+		LIVES: 10,
+		SECONDS: 100,
+		EPIC_MODE: 40,
+		HARDCORE_MODE: 70
+	};
+	startGame();
+}
+
+function startEpicGame() {
+	CONFIG = {
+		SCORE: 0,
+		LIVES: 10,
+		SECONDS: 100,
+		EPIC_MODE: 0,
+		HARDCORE_MODE: 50
+	};
+	startGame();
+}
+
+function startImpossibleGame() {
+	CONFIG = {
+		SCORE: 0,
+		LIVES: 10,
+		SECONDS: 100,
+		EPIC_MODE: 0,
+		HARDCORE_MODE: 0
+	};
+	startGame();
 }
