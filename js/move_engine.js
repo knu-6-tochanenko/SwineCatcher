@@ -15,13 +15,15 @@ const GAME_SPEED = 60;
 var TANK_SPEED = 3;
 const TANK_GAME_SPEED = 10;
 const SWINE_SPAWN = 2000;
-const SWINE_SPAWN_EPIC = 700;
+const SWINE_SPAWN_EPIC = 2000;
+const SWINE_SPAWN_IMPOSSIBLE = 1000;
 
 const LOCAL_HIGH_SCORE = 'swinesHighScore';
 
 var CONFIG = {};
 var swineSpawner = {};
 var epicMode = {};
+var impossibleMode = {};
 
 // Variables
 const globalHeight = document.body.scrollHeight;
@@ -246,10 +248,17 @@ function updateTime() {
 }
 
 function runEpicMode() {
-	divMode.innerHTML = "EPIC РЕЖИМ";
-	SPEED_LIMIT = 10;
+	divMode.innerHTML = "Епічний режим";
+	SPEED_LIMIT = 7;
 	TANK_SPEED = 5;
 	epicMode = setInterval(createSwine, SWINE_SPAWN_EPIC);
+}
+
+function runHardcoreMode() {
+	divMode.innerHTML = "РЕЖИМ ХАРКДОРУ!!!";
+	SPEED_LIMIT = 10;
+	TANK_SPEED = 7;
+	impossibleMode = setInterval(createSwine, SWINE_SPAWN_IMPOSSIBLE);
 }
 
 function updateHighScore() {
@@ -268,6 +277,7 @@ function endGame(cause) {
 	clearInterval(tankInterval);
 	clearInterval(timerInterval);
 	clearInterval(epicMode);
+	clearInterval(impossibleMode);
 	for (var i = 0; i < swines.length; i++) {
 		clearInterval(swines[i].interval);
 	}
@@ -296,7 +306,8 @@ function startGame() {
 		SCORE: 0,
 		LIVES: 10,
 		SECONDS: 100,
-		EPIC_MODE: 0
+		EPIC_MODE: 40,
+		HARDCORE_MODE: 70
 	};
 
 	TANK_SPEED = 3;
@@ -311,5 +322,6 @@ function startGame() {
 	createTank();
 	divMode.innerHTML = "Звичайний режим";
 	setTimeout(runEpicMode, CONFIG.EPIC_MODE * 1000);
+	setTimeout(runHardcoreMode, CONFIG.HARDCORE_MODE * 1000);
 	createTimer();
 }
