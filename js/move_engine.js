@@ -6,6 +6,8 @@ var divMode = document.getElementById('mode');
 var divPopup = document.getElementById('hello_popup');
 var divEndPopup = document.getElementById('end_popup');
 var pEndCause = document.getElementById('end_cause');
+var pHighScoreStart = document.getElementById('high_score_start');
+var pHighScore = document.getElementById('high_score');
 
 // Game settings
 var SPEED_LIMIT = 3;
@@ -286,12 +288,12 @@ function endGame(cause) {
 
 	divEndPopup.style.display = 'block';
 
-	let localHighScore = localStorage.getItem(LOCAL_HIGH_SCORE);
 	if (cause === 'BOWL_FAILURE') {
-		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак! Твій рекод: <b>" + localHighScore + "</b>";
+		pEndCause.innerHTML = "Нажаль, свинособакам вдалось вкрасти унітаз. Спробуй ще раз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
 	} else {
-		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак! Твій рекод: <b>" + localHighScore + "</b>";
+		pEndCause.innerHTML = "Вітаю! Свинособаки так і не змогли вкрасти золотий унітаз! Почавлено <b>" + CONFIG.SCORE + "</b> свинособак!";
 	}
+	pHighScore.innerHTML = "Твій рекорд: <b>" + localStorage.getItem(LOCAL_HIGH_SCORE) + "</b>";
 }
 
 function startGame() {
@@ -349,3 +351,5 @@ function startImpossibleGame() {
 	};
 	startGame();
 }
+
+pHighScoreStart.innerHTML = "Твій рекорд: <b>" + localStorage.getItem(LOCAL_HIGH_SCORE) + "</b>";
