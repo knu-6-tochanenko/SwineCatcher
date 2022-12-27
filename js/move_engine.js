@@ -9,6 +9,8 @@ var pEndCause = document.getElementById('end_cause');
 var pHighScoreStart = document.getElementById('high_score_start');
 var pHighScore = document.getElementById('high_score');
 
+var SPEED_MODIFIER = 1;
+
 // Game settings
 var SPEED_LIMIT = 3;
 const BOWL_SIZE = 80;
@@ -197,27 +199,33 @@ function createSwine() {
 	}
 }
 
-document.addEventListener('keydown', moveTank);
+document.addEventListener('keydown', moveTankPress);
 
-function moveTank(event) {
+function moveTankPress(event) {
 	if (event.isComposing || event.keyCode === 87 || event.keyCode === 38) {
 		tankConfig.speed_x = 0;
-		tankConfig.speed_y = -TANK_SPEED;
+		tankConfig.speed_y = -TANK_SPEED * SPEED_MODIFIER;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 65 || event.keyCode === 37) {
-		tankConfig.speed_x = -TANK_SPEED;
+		tankConfig.speed_x = -TANK_SPEED * SPEED_MODIFIER;
 		tankConfig.speed_y = 0;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 83 || event.keyCode === 40) {
 		tankConfig.speed_x = 0;
-		tankConfig.speed_y = TANK_SPEED;
+		tankConfig.speed_y = TANK_SPEED * SPEED_MODIFIER;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 68 || event.keyCode === 39) {
-		tankConfig.speed_x = TANK_SPEED;
+		tankConfig.speed_x = TANK_SPEED * SPEED_MODIFIER;
 		tankConfig.speed_y = 0;
+		return;
+	}
+	if (event.isComposing || event.keyCode === 16 ) {
+		SPEED_MODIFIER = 2;
+		tankConfig.speed_x = tankConfig.speed_x != 0 ? TANK_SPEED * SPEED_MODIFIER * (tankConfig.speed_x > 0 ? 1 : -1) : 0;
+		tankConfig.speed_y = tankConfig.speed_y != 0 ? TANK_SPEED * SPEED_MODIFIER * (tankConfig.speed_y > 0 ? 1 : -1) : 0;
 		return;
 	}
 	if (event.isComposing || event.keyCode === 32) {
@@ -225,6 +233,38 @@ function moveTank(event) {
 		tankConfig.speed_y = 0;
 	}
 }
+
+document.addEventListener('keyup', moveTankRelease);
+
+function moveTankRelease(event) {
+	// if (event.isComposing || event.keyCode === 87 || event.keyCode === 38) {
+	// 	// tankConfig.speed_x = 0;
+	// 	tankConfig.speed_y = 0;
+	// 	return;
+	// }
+	// if (event.isComposing || event.keyCode === 65 || event.keyCode === 37) {
+	// 	tankConfig.speed_x = 0;
+	// 	// tankConfig.speed_y = 0;
+	// 	return;
+	// }
+	// if (event.isComposing || event.keyCode === 83 || event.keyCode === 40) {
+	// 	// tankConfig.speed_x = 0;
+	// 	tankConfig.speed_y = 0;
+	// 	return;
+	// }
+	// if (event.isComposing || event.keyCode === 68 || event.keyCode === 39) {
+	// 	tankConfig.speed_x = 0;
+	// 	// tankConfig.speed_y = 0;
+	// 	return;
+	// }
+	if (event.isComposing || event.keyCode === 16 ) {
+		SPEED_MODIFIER = 1;
+		tankConfig.speed_x = tankConfig.speed_x != 0 ? TANK_SPEED * SPEED_MODIFIER * (tankConfig.speed_x > 0 ? 1 : -1) : 0;
+		tankConfig.speed_y = tankConfig.speed_y != 0 ? TANK_SPEED * SPEED_MODIFIER * (tankConfig.speed_y > 0 ? 1 : -1) : 0;
+		return;
+	}
+}
+
 
 function createTimer() {
 	var start = Date.now();
@@ -346,6 +386,17 @@ function startImpossibleGame() {
 	CONFIG = {
 		SCORE: 0,
 		LIVES: 10,
+		SECONDS: 100,
+		EPIC_MODE: 0,
+		HARDCORE_MODE: 0
+	};
+	startGame();
+}
+
+function startImpossibleSurvival() {
+	CONFIG = {
+		SCORE: 0,
+		LIVES: 1,
 		SECONDS: 100,
 		EPIC_MODE: 0,
 		HARDCORE_MODE: 0
